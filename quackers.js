@@ -11,7 +11,7 @@ class MallardDuck { //is a Quacker
   }
 }
 
-class ReadheadDuck { //is a Quacker
+class RedheadDuck { //is a Quacker
   quack() {
     console.log('quack');
   }
@@ -36,7 +36,6 @@ class Goose { //NOT a Quacker
   }
 }
 
-//CHANGE 1: add an adapter
 class GooseAdapter { //is a Quacker
   constructor(goose){
     this._goose = goose;
@@ -47,11 +46,30 @@ class GooseAdapter { //is a Quacker
   }
 }
 
+//CHANGE 2: add a decorator
+var numberQuacks = 0; //"static" variable, private to module
+
+class QuackCounter { //is a Quacker
+  constructor(quacker) {
+    this._quacker = quacker;
+  }
+  
+  quack(){
+    this._quacker.quack();
+    numberQuacks++; //count the quack
+  }
+  
+  static get quacks(){
+    return numberQuacks;
+  }  
+}
+
 
 //export all the classes
 module.exports.MallardDuck = MallardDuck;
-module.exports.RedheadDuck = ReadheadDuck;
+module.exports.RedheadDuck = RedheadDuck;
 module.exports.DuckCall = DuckCall;
 module.exports.RubberDuck = RubberDuck;
 module.exports.Goose = Goose;
 module.exports.GooseAdapter = GooseAdapter;
+module.exports.QuackCounter = QuackCounter;
