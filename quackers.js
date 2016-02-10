@@ -63,7 +63,6 @@ class QuackCounter { //is a Quacker
   }  
 }
 
-//CHANGE 3: use a factory
 /**
 AbstractDuckFactory Interface:
   createMallardDuck()
@@ -90,6 +89,23 @@ class CountingDuckFactory { //is an AbstractDuckFactory
   }
 }
 
+//CHANGE 4: specify a flock
+class Flock { //is a Quacker
+  constructor(){
+    this._quackers = [];
+  }
+  
+  add(quacker){
+    this._quackers.push(quacker);
+  }
+  
+  quack() { //there's that quack method!
+    this._quackers.forEach(function(quacker){
+      quacker.quack();
+    });
+  }
+}
+
 
 
 //export all the classes
@@ -101,3 +117,4 @@ module.exports.Goose = Goose;
 module.exports.GooseAdapter = GooseAdapter;
 module.exports.QuackCounter = QuackCounter;
 module.exports.CountingDuckFactory = CountingDuckFactory;
+module.exports.Flock = Flock;
