@@ -1,32 +1,52 @@
 'use strict';
 
+//CHANGE 5: add observers
+class Duck { //is an Observable
+  constructor() {
+    this._observers = new QuackObservers(this); //object to track observers
+  }
+  
+  registerObserver(observer){
+    this._observers.registerObserver(observer); //delegate
+  }
+  
+  notifyAll(){
+    this._observers.notifyAll(); //delegate
+  }
+}
+
+
 /**
 Quacker Interface:
   quack() //has the quacker quack!
 **/
 
-class MallardDuck { //is a Quacker
+class MallardDuck extends Duck { //is a Quacker
   quack() {
     console.log('quack!');
+    this.notifyAll();
   }
 }
 
-class RedheadDuck { //is a Quacker
+class RedheadDuck extends Duck { //is a Quacker
   quack() {
     console.log('quack');
+    this.notifyAll();
   }
 }
 
-class DuckCall { //is a Quacker
+class DuckCall extends Duck { //is a Quacker
   quack() {
     console.log('Kwak');
+    this.notifyAll();
   }
   
 }
 
-class RubberDuck { //is a Quacker
+class RubberDuck extends Duck { //is a Quacker
   quack() {
     console.log('Sqeak');
+    this.notifyAll();
   }
 }
 
@@ -36,19 +56,21 @@ class Goose { //NOT a Quacker
   }
 }
 
-class GooseAdapter { //is a Quacker
+class GooseAdapter extends Duck { //is a Quacker
   constructor(goose){
+    super();
     this._goose = goose;
   }
   
   quack() {
     this._goose.honk();
+    this.notifyAll();
   }
 }
 
 var numberQuacks = 0; //"static" variable, private to module
 
-class QuackCounter { //is a Quacker
+class QuackCounter { //is a Quacker AND an Observable
   constructor(quacker) {
     this._quacker = quacker;
   }
@@ -61,6 +83,14 @@ class QuackCounter { //is a Quacker
   static get quacks(){
     return numberQuacks;
   }  
+
+ registerObserver(observer){
+    this._quacker.registerObserver(observer); //delegate
+  }
+  
+  notifyAll(){
+    this._quacker.notifyAll(); //delegate
+  }
 }
 
 /**
@@ -89,9 +119,9 @@ class CountingDuckFactory { //is an AbstractDuckFactory
   }
 }
 
-//CHANGE 4: specify a flock
-class Flock { //is a Quacker
+class Flock extends Duck { //is a Quacker
   constructor(){
+    super();
     this._quackers = [];
   }
   
@@ -103,10 +133,49 @@ class Flock { //is a Quacker
     this._quackers.forEach(function(quacker){
       quacker.quack();
     });
+    this.notifyAll();
   }
 }
 
+//CHANGE 5: add observers
+/**
+Observable Interface:
+  registerObserver(observer)
+  notifyAll()
+**/
 
+//an object to keep track of te observers
+class QuackObservers { //is an Observable
+  constructor(observed) {
+    this._observers = [];
+    this._duck = observed; //who we're watching
+  }  
+  
+  registerObserver(observer){
+    this._observers.push(observer);
+  }
+  
+  notifyAll() { //let everyone know!
+    // console.log(this);
+    // console.log('notifying '+this._observers.length);
+    this._observers.forEach(function(observer){
+      observer.update(this._duck);
+    }, this);
+  }
+}
+
+//see Duck class above
+
+/**
+Observer Interface:
+  update(duck)
+**/
+
+class DuckFan { //is an Observer
+  update(duck){
+    console.log('A fan just heard their idol. SQUEEEEEEEE!!!');
+  }
+}
 
 //export all the classes
 module.exports.MallardDuck = MallardDuck;
@@ -118,3 +187,4 @@ module.exports.GooseAdapter = GooseAdapter;
 module.exports.QuackCounter = QuackCounter;
 module.exports.CountingDuckFactory = CountingDuckFactory;
 module.exports.Flock = Flock;
+module.exports.DuckFan = DuckFan;
