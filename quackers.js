@@ -11,7 +11,7 @@ class MallardDuck { //is a Quacker
   }
 }
 
-class ReadheadDuck { //is a Quacker
+class RedheadDuck { //is a Quacker
   quack() {
     console.log('quack');
   }
@@ -46,7 +46,6 @@ class GooseAdapter { //is a Quacker
   }
 }
 
-//CHANGE 2: add a decorator
 var numberQuacks = 0; //"static" variable, private to module
 
 class QuackCounter { //is a Quacker
@@ -56,7 +55,7 @@ class QuackCounter { //is a Quacker
   
   quack(){
     this._quacker.quack();
-    numberQuacks++; //count the quack
+    numberQuacks++;
   }
   
   static get quacks(){
@@ -64,12 +63,41 @@ class QuackCounter { //is a Quacker
   }  
 }
 
+//CHANGE 3: use a factory
+/**
+AbstractDuckFactory Interface:
+  createMallardDuck()
+  createRedheadDuck()
+  createDuckCall()
+  createRubberDuck()
+**/
+
+class CountingDuckFactory { //is an AbstractDuckFactory
+  createMallardDuck(){
+    return new QuackCounter(new MallardDuck());  
+  }    
+  
+  createRedheadDuck(){
+    return new QuackCounter(new RedheadDuck());      
+  }
+  
+  createDuckCall() {
+    return new QuackCounter(new DuckCall());          
+  }
+  
+  createRubberDuck() {
+    return new QuackCounter(new RubberDuck());              
+  }
+}
+
+
 
 //export all the classes
 module.exports.MallardDuck = MallardDuck;
-module.exports.RedheadDuck = ReadheadDuck;
+module.exports.RedheadDuck = RedheadDuck;
 module.exports.DuckCall = DuckCall;
 module.exports.RubberDuck = RubberDuck;
 module.exports.Goose = Goose;
 module.exports.GooseAdapter = GooseAdapter;
 module.exports.QuackCounter = QuackCounter;
+module.exports.CountingDuckFactory = CountingDuckFactory;
