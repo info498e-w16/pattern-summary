@@ -36,6 +36,17 @@ class Goose { //NOT a Quacker
   }
 }
 
+//CHANGE 1: add an adapter
+class GooseAdapter { //is a Quacker
+  constructor(goose){
+    this._goose = goose;
+  }
+  
+  quack() {
+    this._goose.honk();
+  }
+}
+
 
 //export all the classes
 module.exports.MallardDuck = MallardDuck;
@@ -43,3 +54,4 @@ module.exports.RedheadDuck = ReadheadDuck;
 module.exports.DuckCall = DuckCall;
 module.exports.RubberDuck = RubberDuck;
 module.exports.Goose = Goose;
+module.exports.GooseAdapter = GooseAdapter;
